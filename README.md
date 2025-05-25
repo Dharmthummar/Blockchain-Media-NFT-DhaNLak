@@ -42,7 +42,7 @@ DhaNLak-tokens are unique NFTs representing digital content ownership, visualize
 
 ## Project Structure
 ```
-blocksync/
+./
 ├── index.html           # Main HTML file
 ├── app.js              # Core logic (Web3, IPFS)
 ├── auth.js             # Authentication system
