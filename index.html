@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlockSync - Blockchain Royalty Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Animation Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Include Web3.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <!-- Include IPFS HTTP Client -->
+    <script src="https://cdn.jsdelivr.net/npm/ipfs-http-client/dist/index.min.js"></script>
+    <!-- Include AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- Authentication Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <div class="auth-tabs">
+                <button id="loginTab" class="auth-tab active" onclick="switchAuthForm('login')">Login</button>
+                <button id="registerTab" class="auth-tab" onclick="switchAuthForm('register')">Register</button>
+            </div>
+            
+            <form id="loginForm" class="auth-form">
+                <h2>Login to Your Account</h2>
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button type="submit" class="btn">Login</button>
+            </form>
+            
+            <form id="registerForm" class="auth-form" style="display: none;">
+                <h2>Create New Account</h2>
+                <input type="text" id="registerName" placeholder="Full Name" required>
+                <input type="email" id="registerEmail" placeholder="Email" required>
+                <input type="password" id="registerPassword" placeholder="Password" required>
+                <button type="submit" class="btn">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <div class="b-logo">
+                    <span>B</span>
+                    <div class="logo-particles"></div>
+                </div>
+                <h1>BlockSync</h1>
+            </div>
+            <p>Revolutionizing digital content royalties through blockchain technology</p>
+            
+            <div class="blockchain-nodes">
+                <div class="node"></div>
+                <div class="node"></div>
+                <div class="node"></div>
+                <div class="node"></div>
+                <div class="node"></div>
+            </div>
+            
+            <div class="header-actions">
+                <div id="authSection"><span>Explore the platform first</span></div>
+                <button id="connectButton" class="btn crystal-btn"><i class="fas fa-wallet"></i> Connect MetaMask</button>
+                <button id="userProfileButton" class="btn crystal-btn" onclick="showTab('profile-tab')" style="display: none;"><i class="fas fa-user"></i> My Profile</button>
+                <button id="logoutButton" class="btn crystal-btn" style="display: none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider round">
+                            <i class="fas fa-moon"></i>
+                            <i class="fas fa-sun"></i>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <p id="walletStatus">Please connect your wallet.</p>
+        </div>
+        
+        <div class="blockchain-animation">
+            <div class="blockchain-grid"></div>
+            <div class="chain-container animate__animated animate__fadeIn">
+                <div class="chain-connection"></div>
+                <div class="crystal-block" data-aos="fade-right" data-aos-delay="100">
+                    <div class="cube">
+                        <div class="cube-face front">Block 1</div>
+                        <div class="cube-face back">Hash</div>
+                        <div class="cube-face right">Data</div>
+                        <div class="cube-face left">Prev</div>
+                        <div class="cube-face top">Nonce</div>
+                        <div class="cube-face bottom">Time</div>
+                    </div>
+                    <div class="block-hash">0x8f4e...</div>
+                </div>
+                <div class="chain-connection"></div>
+                <div class="crystal-block" data-aos="fade-right" data-aos-delay="300">
+                    <div class="cube">
+                        <div class="cube-face front">Block 2</div>
+                        <div class="cube-face back">Hash</div>
+                        <div class="cube-face right">Data</div>
+                        <div class="cube-face left">Prev</div>
+                        <div class="cube-face top">Nonce</div>
+                        <div class="cube-face bottom">Time</div>
+                    </div>
+                    <div class="block-hash">0x3a7b...</div>
+                </div>
+                <div class="chain-connection"></div>
+                <div class="crystal-block" data-aos="fade-right" data-aos-delay="500">
+                    <div class="cube">
+                        <div class="cube-face front">Block 3</div>
+                        <div class="cube-face back">Hash</div>
+                        <div class="cube-face right">Data</div>
+                        <div class="cube-face left">Prev</div>
+                        <div class="cube-face top">Nonce</div>
+                        <div class="cube-face bottom">Time</div>
+                    </div>
+                    <div class="block-hash">0x2c9d...</div>
+                </div>
+                <div class="chain-connection"></div>
+                <div class="crystal-block" data-aos="fade-right" data-aos-delay="700">
+                    <div class="cube">
+                        <div class="cube-face front">Block 4</div>
+                        <div class="cube-face back">Hash</div>
+                        <div class="cube-face right">Data</div>
+                        <div class="cube-face left">Prev</div>
+                        <div class="cube-face top">Nonce</div>
+                        <div class="cube-face bottom">Time</div>
+                    </div>
+                    <div class="block-hash">0x6e1f...</div>
+                </div>
+                <div class="chain-connection"></div>
+                <div class="crystal-block new-block" data-aos="fade-right" data-aos-delay="900">
+                    <div class="cube">
+                        <div class="cube-face front">Block 5</div>
+                        <div class="cube-face back">Hash</div>
+                        <div class="cube-face right">Data</div>
+                        <div class="cube-face left">Prev</div>
+                        <div class="cube-face top">Nonce</div>
+                        <div class="cube-face bottom">Time</div>
+                    </div>
+                    <div class="block-hash mining">Mining...</div>
+                </div>
+            </div>
+            <div class="data-packets">
+                <div class="data-packet"></div>
+                <div class="data-packet"></div>
+                <div class="data-packet"></div>
+            </div>
+        </div>
+    </header>
+
+    <div id="mainContent" style="display: none;">
+        <div class="tabs">
+            <button class="tab-button" data-tab="learn-tab"><i class="fas fa-graduation-cap"></i> Learn Blockchain</button>
+            <button class="tab-button active" data-tab="creator-tab"><i class="fas fa-tools"></i> Creator Studio</button>
+            <button class="tab-button" data-tab="royalty-tab"><i class="fas fa-money-bill-wave"></i> Royalty Hub</button>
+            <button class="tab-button" data-tab="marketplace-tab"><i class="fas fa-store"></i> Marketplace</button>
+            <button class="tab-button" data-tab="account-tab"><i class="fas fa-chart-line"></i> Dashboard</button>
+            <button class="tab-button" data-tab="profile-tab"><i class="fas fa-user-circle"></i> Profile</button>
+        </div>
+        
+        <!-- Educational Content Tab -->
+        <div class="tab-content" id="learn-tab">
+            <section id="blockchain-intro" data-aos="fade-up">
+                <div class="form-container">
+                    <h2><i class="fas fa-graduation-cap"></i> Blockchain in Media & Entertainment</h2>
+                    <div class="info-card">
+                        <h3>What is Blockchain?</h3>
+                        <p>Blockchain is a distributed, immutable ledger that records transactions across many computers. In media and entertainment, it enables transparent royalty distribution, content authenticity verification, and new monetization models.</p>
+                        <div class="animation-container">
+                            <div class="blockchain-demo">
+                                <div class="block-animation">
+                                    <div class="block-item">Transaction</div>
+                                    <i class="fas fa-arrow-right"></i>
+                                    <div class="block-item">Verification</div>
+                                    <i class="fas fa-arrow-right"></i>
+                                    <div class="block-item">Block Added</div>
+                                    <i class="fas fa-arrow-right"></i>
+                                    <div class="block-item">Chain Updated</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="royalty-distribution" data-aos="fade-up" data-aos-delay="200">
+                <div class="form-container">
+                    <h2><i class="fas fa-money-bill-wave"></i> Royalty Distribution</h2>
+                    <div class="info-card">
+                        <h3>How Blockchain Transforms Royalty Payments</h3>
+                        <p>Traditional royalty systems are often opaque and inefficient. Blockchain enables:</p>
+                        <ul>
+                            <li>Transparent tracking of content usage</li>
+                            <li>Automated payments through smart contracts</li>
+                            <li>Real-time distribution to all stakeholders</li>
+                            <li>Elimination of intermediaries</li>
+                        </ul>
+                        <div class="diagram">
+                            <img src="https://via.placeholder.com/800x400?text=Royalty+Distribution+Flow+Diagram" alt="Royalty Distribution Flow" class="responsive-img">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="content-authenticity" data-aos="fade-up" data-aos-delay="300">
+                <div class="form-container">
+                    <h2><i class="fas fa-shield-alt"></i> Content Authenticity & Anti-Piracy</h2>
+                    <div class="info-card">
+                        <h3>Combating Piracy with Blockchain</h3>
+                        <p>Blockchain provides powerful tools to verify content authenticity and combat piracy:</p>
+                        <ul>
+                            <li>Immutable proof of ownership</li>
+                            <li>Digital fingerprinting of content</li>
+                            <li>Transparent usage tracking</li>
+                            <li>Verifiable licensing history</li>
+                        </ul>
+                        <div class="sequence-diagram">
+                            <div class="sequence-step">
+                                <div class="sequence-number">1</div>
+                                <div class="sequence-desc">Content Creation & Registration</div>
+                            </div>
+                            <div class="sequence-arrow"><i class="fas fa-arrow-down"></i></div>
+                            <div class="sequence-step">
+                                <div class="sequence-number">2</div>
+                                <div class="sequence-desc">Blockchain Verification & Timestamping</div>
+                            </div>
+                            <div class="sequence-arrow"><i class="fas fa-arrow-down"></i></div>
+                            <div class="sequence-step">
+                                <div class="sequence-number">3</div>
+                                <div class="sequence-desc">Digital Fingerprint Creation</div>
+                            </div>
+                            <div class="sequence-arrow"><i class="fas fa-arrow-down"></i></div>
+                            <div class="sequence-step">
+                                <div class="sequence-number">4</div>
+                                <div class="sequence-desc">Automated Usage Tracking</div>
+                            </div>
+                            <div class="sequence-arrow"><i class="fas fa-arrow-down"></i></div>
+                            <div class="sequence-step">
+                                <div class="sequence-number">5</div>
+                                <div class="sequence-desc">Royalty Distribution</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="nft-explanation" data-aos="fade-up" data-aos-delay="400">
+                <div class="form-container">
+                    <h2><i class="fas fa-palette"></i> DhaNLak-tokens in Media & Entertainment</h2>
+                    <div class="info-card">
+                        <h3>DhaNLak-tokens Explained</h3>
+                        <p>DhaNLak-tokens are unique digital assets that represent ownership of a specific item or content piece on the blockchain, visualized as colorful QR-like codes.</p>
+                        
+                        <div class="token-showcase">
+                            <div class="dhanlak-token token-blue">
+                                <div class="qr-pattern"></div>
+                                <div class="token-glow"></div>
+                            </div>
+                            <div class="dhanlak-token token-purple">
+                                <div class="qr-pattern"></div>
+                                <div class="token-glow"></div>
+                            </div>
+                            <div class="dhanlak-token token-green">
+                                <div class="qr-pattern"></div>
+                                <div class="token-glow"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="nft-benefits">
+                            <div class="benefit-item">
+                                <i class="fas fa-fingerprint"></i>
+                                <h4>Uniqueness</h4>
+                                <p>Each DhaNLak-token has unique properties that cannot be replicated</p>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-link"></i>
+                                <h4>Provenance</h4>
+                                <p>Complete ownership history tracked on blockchain</p>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-coins"></i>
+                                <h4>Monetization</h4>
+                                <p>New revenue streams for creators</p>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-code"></i>
+                                <h4>Programmability</h4>
+                                <p>Can include royalty mechanisms for resales</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="decentralized-platforms" data-aos="fade-up" data-aos-delay="500">
+                <div class="form-container">
+                    <h2><i class="fas fa-network-wired"></i> Decentralized Content Platforms</h2>
+                    <div class="info-card">
+                        <h3>The Future of Content Distribution</h3>
+                        <p>Decentralized platforms are changing how content is created, distributed, and monetized:</p>
+                        <ul>
+                            <li>Direct creator-to-consumer relationships</li>
+                            <li>Community governance of platforms</li>
+                            <li>Reduced platform fees</li>
+                            <li>Creator-owned distribution channels</li>
+                        </ul>
+                        <div class="comparison-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Feature</th>
+                                        <th>Traditional Platforms</th>
+                                        <th>Blockchain Platforms</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Revenue Share</td>
+                                        <td>30-50% to platform</td>
+                                        <td>0-10% to platform</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Payment Speed</td>
+                                        <td>30-90 days</td>
+                                        <td>Instant to days</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ownership</td>
+                                        <td>Platform-controlled</td>
+                                        <td>Creator-owned</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Transparency</td>
+                                        <td>Limited</td>
+                                        <td>Full</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="challenges" data-aos="fade-up" data-aos-delay="600">
+                <div class="form-container">
+                    <h2><i class="fas fa-exclamation-triangle"></i> Challenges & Considerations</h2>
+                    <div class="info-card">
+                        <h3>Overcoming Adoption Barriers</h3>
+                        <p>Despite its potential, blockchain adoption in media faces several challenges:</p>
+                        <div class="challenges-grid">
+                            <div class="challenge-item">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <h4>Scalability</h4>
+                                <p>Transaction throughput limitations</p>
+                            </div>
+                            <div class="challenge-item">
+                                <i class="fas fa-user-graduate"></i>
+                                <h4>Education</h4>
+                                <p>Technical complexity for users</p>
+                            </div>
+                            <div class="challenge-item">
+                                <i class="fas fa-balance-scale"></i>
+                                <h4>Regulation</h4>
+                                <p>Evolving legal frameworks</p>
+                            </div>
+                            <div class="challenge-item">
+                                <i class="fas fa-plug"></i>
+                                <h4>Integration</h4>
+                                <p>Compatibility with existing systems</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="use-case-diagram" data-aos="fade-up" data-aos-delay="700">
+                <div class="form-container">
+                    <h2><i class="fas fa-project-diagram"></i> System Use Case Diagram</h2>
+                    <div class="info-card">
+                        <h3>How Our Platform Works</h3>
+                        <div class="use-case-diagram">
+                            <div class="actor">Content Creator</div>
+                            <div class="use-cases">
+                                <div class="use-case">Register Content</div>
+                                <div class="use-case">Assign Royalty Shares</div>
+                                <div class="use-case">Update Content Price</div>
+                                <div class="use-case">Withdraw Earnings</div>
+                            </div>
+                            <div class="actor">Content Consumer</div>
+                            <div class="use-cases">
+                                <div class="use-case">Browse Marketplace</div>
+                                <div class="use-case">Purchase Content</div>
+                                <div class="use-case">Verify Content Authenticity</div>
+                            </div>
+                            <div class="actor">Collaborator</div>
+                            <div class="use-cases">
+                                <div class="use-case">Receive Royalty Shares</div>
+                                <div class="use-case">View Earnings</div>
+                                <div class="use-case">Withdraw Funds</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    <div class="tab-content active" id="creator-tab">
+        <section id="content-registration">
+            <div class="form-container">
+                <h2><i class="fas fa-plus-circle"></i> Create Digital Asset</h2>
+                <div class="crystal-form">
+                    <div class="form-group">
+                        <label for="title"><i class="fas fa-heading"></i> Asset Title</label>
+                        <input type="text" id="title" placeholder="Give your creation a name" class="input-field crystal-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contentFile"><i class="fas fa-file-upload"></i> Upload Media File</label>
+                        <div class="media-upload-container">
+                            <input type="file" id="contentFile" class="media-upload" accept="image/*,video/*,audio/*">
+                            <div class="upload-preview">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Drag & drop your media file or click to browse</p>
+                                <p class="file-types">Supports images, videos, and audio files</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="price"><i class="fas fa-tag"></i> Asset Price</label>
+                        <div class="price-input-container">
+                            <input type="number" id="price" placeholder="0.00" class="input-field crystal-input">
+                            <span class="eth-label">ETH</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-palette"></i> DhaNLak-token Style</label>
+                        <div class="token-style-selector">
+                            <div class="token-option selected" data-style="blue">
+                                <div class="mini-token token-blue"></div>
+                                <span>Ocean</span>
+                            </div>
+                            <div class="token-option" data-style="purple">
+                                <div class="mini-token token-purple"></div>
+                                <span>Cosmic</span>
+                            </div>
+                            <div class="token-option" data-style="green">
+                                <div class="mini-token token-green"></div>
+                                <span>Nature</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="registerContent()" class="btn crystal-btn"><i class="fas fa-magic"></i> Create Digital Asset</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="my-content">
+            <div class="form-container">
+                <h2><i class="fas fa-cubes"></i> My Digital Assets</h2>
+                <div class="section-actions">
+                    <button onclick="loadMyContent()" class="btn crystal-btn-secondary"><i class="fas fa-sync"></i> Refresh</button>
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid"><i class="fas fa-th"></i></button>
+                        <button class="view-btn" data-view="list"><i class="fas fa-list"></i></button>
+                    </div>
+                </div>
+                <div id="myContentList" class="content-grid"></div>
+            </div>
+        </section>
+    </div>
+
+    <div class="tab-content" id="royalty-tab">
+        <section id="royalty-management">
+            <div class="form-container">
+                <h2><i class="fas fa-users"></i> Assign Royalty Shares</h2>
+                <input type="number" id="contentId" placeholder="Content ID" class="input-field">
+                <input type="text" id="recipient" placeholder="Recipient Address" class="input-field">
+                <input type="number" id="share" placeholder="Royalty Share (%)" class="input-field">
+                <button onclick="assignRoyaltyShare()" class="btn"><i class="fas fa-share-alt"></i> Assign Share</button>
+            </div>
+        </section>
+
+        <section id="royalty-distribution">
+            <div class="form-container">
+                <h2><i class="fas fa-money-bill-wave"></i> Distribute Royalties</h2>
+                <input type="number" id="contentIdDist" placeholder="Content ID" class="input-field">
+                <input type="number" id="ethAmount" placeholder="Amount (ETH)" class="input-field">
+                <button onclick="distributeRoyalties()" class="btn"><i class="fas fa-hand-holding-usd"></i> Distribute Royalties</button>
+            </div>
+        </section>
+
+        <section id="royalty-share">
+            <div class="form-container">
+                <h2><i class="fas fa-percentage"></i> View Royalty Shares</h2>
+                <input type="number" id="royaltyContentId" placeholder="Content ID" class="input-field">
+                <button onclick="getAllShareholders()" class="btn"><i class="fas fa-users"></i> View All Shareholders</button>
+                <div id="allShareholdersDetails"></div>
+                <button onclick="getTotalSharesRemaining()" class="btn"><i class="fas fa-chart-pie"></i> View Remaining Shares</button>
+                <p id="totalSharesDetails"></p>
+            </div>
+        </section>
+    </div>
+
+    <div class="tab-content" id="marketplace-tab">
+        <section id="content-marketplace">
+            <div class="form-container">
+                <h2><i class="fas fa-store"></i> Content Marketplace</h2>
+                <div class="search-bar">
+                    <input type="text" id="searchContent" placeholder="Search content..." class="input-field">
+                    <button onclick="searchContent()" class="btn"><i class="fas fa-search"></i> Search</button>
+                </div>
+                <div id="contentMarketplace"></div>
+            </div>
+        </section>
+
+        <section id="content-details">
+            <div class="form-container">
+                <h2><i class="fas fa-info-circle"></i> Verify Content</h2>
+                <input type="number" id="verifyContentId" placeholder="Content ID" class="input-field">
+                <button onclick="verifyContent()" class="btn"><i class="fas fa-check-circle"></i> View Content Details</button>
+                <p id="contentDetails"></p>
+            </div>
+        </section>
+
+        <section id="purchase-content">
+            <div class="form-container">
+                <h2><i class="fas fa-shopping-cart"></i> Purchase Content</h2>
+                <input type="number" id="purchaseContentId" placeholder="Content ID" class="input-field">
+                <button onclick="purchaseContent()" class="btn"><i class="fas fa-credit-card"></i> Purchase</button>
+            </div>
+        </section>
+    </div>
+
+    <div class="tab-content" id="account-tab">
+        <section id="user-balance">
+            <div class="form-container">
+                <h2><i class="fas fa-wallet"></i> Your Balance</h2>
+                <button onclick="getBalance()" class="btn"><i class="fas fa-sync"></i> Check Balance</button>
+                <p id="userBalanceDetails"></p>
+                <button onclick="withdrawFunds()" class="btn"><i class="fas fa-money-bill-transfer"></i> Withdraw Funds</button>
+            </div>
+        </section>
+
+        <section id="update-price">
+            <div class="form-container">
+                <h2><i class="fas fa-tags"></i> Update Content Price</h2>
+                <input type="number" id="updateContentId" placeholder="Content ID" class="input-field">
+                <input type="number" id="newPrice" placeholder="New Price (ETH)" class="input-field">
+                <button onclick="updatePrice()" class="btn"><i class="fas fa-edit"></i> Update Price</button>
+            </div>
+        </section>
+
+        <section id="remove-shareholder">
+            <div class="form-container">
+                <h2><i class="fas fa-user-minus"></i> Remove Shareholder</h2>
+                <input type="number" id="removeContentId" placeholder="Content ID" class="input-field">
+                <input type="text" id="removeRecipient" placeholder="Recipient Address" class="input-field">
+                <button onclick="removeShareholder()" class="btn"><i class="fas fa-trash"></i> Remove Shareholder</button>
+            </div>
+        </section>
+    </div>
+    
+    <!-- User Profile Tab -->
+    <div class="tab-content" id="profile-tab">
+        <section id="user-profile" data-aos="fade-up">
+            <div class="form-container">
+                <h2><i class="fas fa-user-circle"></i> Your Profile</h2>
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <img id="profileAvatar" src="https://via.placeholder.com/150" alt="Profile Picture">
+                            <div class="avatar-upload">
+                                <label for="avatarUpload"><i class="fas fa-camera"></i></label>
+                                <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="profile-info">
+                            <h3 id="profileName">User Name</h3>
+                            <p id="profileEmail">user@example.com</p>
+                            <p id="profileWallet">Wallet: Not connected</p>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-edit">
+                        <h3>Edit Profile</h3>
+                        <input type="text" id="editName" placeholder="Your Name" class="input-field">
+                        <textarea id="editBio" placeholder="Write a short bio..." class="input-field"></textarea>
+                        <button onclick="updateProfile()" class="btn"><i class="fas fa-save"></i> Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="user-content" data-aos="fade-up" data-aos-delay="200">
+            <div class="form-container">
+                <h2><i class="fas fa-photo-video"></i> Your Content</h2>
+                <div class="tabs-secondary">
+                    <button class="tab-button-secondary active" data-secondary-tab="created-content">Created Content</button>
+                    <button class="tab-button-secondary" data-secondary-tab="purchased-content">Purchased Content</button>
+                    <button class="tab-button-secondary" data-secondary-tab="nft-collection">NFT Collection</button>
+                </div>
+                
+                <div class="tab-content-secondary active" id="created-content">
+                    <div id="userCreatedContent" class="content-grid">
+                        <!-- Content will be loaded dynamically -->
+                        <p class="empty-state">You haven't created any content yet.</p>
+                    </div>
+                </div>
+                
+                <div class="tab-content-secondary" id="purchased-content">
+                    <div id="userPurchasedContent" class="content-grid">
+                        <!-- Content will be loaded dynamically -->
+                        <p class="empty-state">You haven't purchased any content yet.</p>
+                    </div>
+                </div>
+                
+                <div class="tab-content-secondary" id="nft-collection">
+                    <div id="userNFTCollection" class="nft-grid">
+                        <!-- NFTs will be loaded dynamically -->
+                        <p class="empty-state">You don't have any NFTs in your collection yet.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="activity-history" data-aos="fade-up" data-aos-delay="300">
+            <div class="form-container">
+                <h2><i class="fas fa-history"></i> Activity History</h2>
+                <div id="userActivity" class="activity-list">
+                    <!-- Activity will be loaded dynamically -->
+                    <p class="empty-state">No recent activity to display.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="b-logo small">
+                    <span>B</span>
+                </div>
+                <p>BlockSync</p>
+            </div>
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-book"></i> Documentation</a>
+                <a href="#"><i class="fas fa-code"></i> API</a>
+                <a href="https://github.com/yourusername/royalty-distribution" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+            <div class="blockchain-nodes footer-nodes">
+                <div class="node"></div>
+                <div class="node"></div>
+                <div class="node"></div>
+            </div>
+            <p class="copyright">&copy; 2025 BlockSync | Blockchain Royalty Platform</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="profile.js"></script>
+    <script src="app.js"></script>
+    
+    <script>
+        // Initialize animations and interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Start animations
+            const animatedElements = document.querySelectorAll('.animate__animated');
+            animatedElements.forEach(el => {
+                el.classList.add('animate__fadeIn');
+            });
+        });
+    </script>
+</body>
+
+</html>
