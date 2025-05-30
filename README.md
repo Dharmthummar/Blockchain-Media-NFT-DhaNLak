@@ -1,4 +1,5 @@
 # BlockSync: Blockchain Royalty Platform (NFT: DhaNLak)
+[![LINK](https://img.shields.io/badge/Visit%20Website-7c3ca1)](https://dharmthummar.github.io/Blockchain-Media-NFT-DhaNLak/)
 
 BlockSync is a decentralized Ethereum-based platform for managing digital content, royalties, and NFTs. It enables creators, consumers, and collaborators to register, monetize, and verify digital assets transparently using smart contracts and IPFS. DhaNLak-tokens, unique digital assets visualized as colorful QR-like codes, enhance content ownership and monetization.
 
